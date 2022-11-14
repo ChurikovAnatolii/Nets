@@ -67,4 +67,37 @@ traceroute to ya.ru (87.250.250.242), 30 hops max, 60 byte packets
 10  * ya.ru (87.250.250.242)  7.585 ms *
 ```
 
+- Повторим процедуру для office2srv
 
+
+```
+[root@office2srv vagrant]# tracroute 192.168.0.2
+bash: tracroute: command not found
+[root@office2srv vagrant]# traceroute 192.168.0.2
+traceroute to 192.168.0.2 (192.168.0.2), 30 hops max, 60 byte packets
+ 1  gateway (192.168.2.1)  0.937 ms  0.793 ms  0.495 ms
+ 2  192.168.255.9 (192.168.255.9)  1.060 ms  1.211 ms  1.659 ms
+ 3  192.168.0.2 (192.168.0.2)  2.045 ms  1.694 ms  1.556 ms
+
+[root@office2srv vagrant]# traceroute 192.168.1.2
+traceroute to 192.168.1.2 (192.168.1.2), 30 hops max, 60 byte packets
+ 1  gateway (192.168.2.1)  0.887 ms  0.735 ms  0.557 ms
+ 2  192.168.255.9 (192.168.255.9)  1.595 ms  1.473 ms  1.357 ms
+ 3  192.168.255.6 (192.168.255.6)  2.912 ms  2.801 ms  2.546 ms
+ 4  192.168.1.2 (192.168.1.2)  2.934 ms  2.802 ms  2.662 ms
+
+[root@office2srv vagrant]# traceroute ya.ru
+traceroute to ya.ru (87.250.250.242), 30 hops max, 60 byte packets
+ 1  gateway (192.168.2.1)  0.601 ms  0.693 ms  0.694 ms
+ 2  192.168.255.9 (192.168.255.9)  1.738 ms  1.504 ms  1.500 ms
+ 3  192.168.255.1 (192.168.255.1)  2.533 ms  2.729 ms  2.562 ms
+ 4  * * *
+ 5  * * *
+ 6  * * *
+ 7  * * *
+ 8  213.79.127.21 (213.79.127.21)  4.110 ms  4.015 ms  3.680 ms
+ 9  vla-32z1-ae2.yndx.net (93.158.172.19)  17.775 ms * *
+10  ya.ru (87.250.250.242)  7.466 ms * *
+```
+
+Вывод : маршрутизация работает согдасно схеме.

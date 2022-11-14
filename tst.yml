@@ -1,0 +1,29 @@
+- name: office2router
+  hosts: office2router
+  become: true
+  tasks:
+  - name: ADD default route
+    become_user: root
+    shell: echo "DEFROUTE=no" >> /etc/sysconfig/network-scripts/ifcfg-eth0 
+
+  - name: ADD default route
+    become_user: root
+    shell: echo "GATEWAY=192.168.255.9" >> /etc/sysconfig/network-scripts/ifcfg-eth4
+  
+  - name: forwarding enable 
+    become_user: root
+    shell: sysctl -w net.ipv4.conf.all.forwarding=1
+
+  - name: Ensure myservice  is in a running state
+    service:
+      name: network 
+      state: started
+    register: myserviceDetails
+    until: myserviceDetails.status.ActiveState == "active"
+    retries: 5
+    delay: 10
+  
+  - name: Network restart
+    systemd:
+      state: restarted
+      name: network

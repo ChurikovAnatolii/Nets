@@ -1,5 +1,4 @@
-# -*- mode: ruby -*-
-# vim: set ft=ruby :
+
 # -*- mode: ruby -*-
 # vim: set ft=ruby :
 
@@ -11,6 +10,15 @@ MACHINES = {
                    {ip: '192.168.255.1', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router-net"},
                 ]
   },
+  :inetRouter2 => {
+        :box_name => "centos/7",
+        #:public => {:ip => '10.10.10.1', :adapter => 1},
+        :net => [
+                   {ip: '192.168.254.2', adapter: 2, netmask: "255.255.255.252", virtualbox__intnet: "router2-net"},
+                   {ip: '192.168.56.100', adapter: 3, netmask: "255.255.255.0", name: "vboxnet0"},
+
+                ]
+  },
   :centralRouter => {
         :box_name => "centos/7",
         :net => [
@@ -20,6 +28,7 @@ MACHINES = {
                    {ip: '192.168.0.65', adapter: 5, netmask: "255.255.255.192", virtualbox__intnet: "mgt-net"},
                    {ip: '192.168.255.5', adapter: 6, netmask: "255.255.255.252", virtualbox__intnet: "off1-router"},
                    {ip: '192.168.255.9', adapter: 7, netmask: "255.255.255.252", virtualbox__intnet: "off2-router"},
+                   {ip: '192.168.254.1', adapter: 8, netmask: "255.255.255.252", virtualbox__intnet: "router2-net"},
 
                 ]
   },

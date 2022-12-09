@@ -27,7 +27,7 @@
     become_user: root
     shell: echo '192.168.0.0/16 via 192.168.255.2 dev eth1' > /etc/sysconfig/network-scripts/route-eth1
     ignore_errors: true
-
+    
 - name: office1router
   hosts: office1router
   become: true

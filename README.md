@@ -101,3 +101,62 @@ traceroute to ya.ru (87.250.250.242), 30 hops max, 60 byte packets
 ```
 
 Вывод : маршрутизация работает согдасно схеме.
+
+---
+
+### ДЗ фильтрация трафика
+
+
+**- 1. Реализовать knocking port**
+
+Для этого на inetrouter устанавливаем knokd-сервис, на centralRouter скрипт, который стучится по следущим tcp-портам: 2222,3333,4444. Проверяем работу. Для этого зайдем на inetRouter и включим DROP политику на INPUT, проверим возможность доступа с centralrouter после запуска скрипта:
+
+```console
+
+[vagrant@inetRouter ~]$ sudo iptables --policy INPUT DROP
+
+[vagrant@centralRouter ~]$ ping 192.168.255.1
+PING 192.168.255.1 (192.168.255.1) 56(84) bytes of data.
+[vagrant@centralRouter ~]$ ./knock.sh 192.168.255.1 2222 3333 4444
+[vagrant@centralRouter ~]$ ssh 192.168.255.1
+vagrant@192.168.255.1's password: 
+Last login: Sat Dec 10 09:10:14 2022 from 10.0.2.2
+[vagrant@inetRouter ~]$ sudo iptables -nvL
+Chain INPUT (policy DROP 5 packets, 1884 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    6   360 ACCEPT     tcp  --  *      *       0.0.0.0/0            0.0.0.0/0            tcp dpts:2222:4444
+  161 13345 ACCEPT     tcp  --  *      *       192.168.255.2        0.0.0.0/0            tcp dpt:22
+
+```
+---
+
+**- 2. Реализация пунктов 2-5 ДЗ**
+
+В вагрант файл добавлен inetRouter2, на его интерфейсах со стороны хоста настроен DNAT c порта 8080 в сторону centralRouter на порт 80. На centralRouter поднят nginx, настроен обратный статический маршрут с centralRouter в сторону хоста. Проверим работу схемы.
+
+```console
+[root@ATVVO Nets]# curl 192.168.56.100:8080
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Welcome to CentOS</title>
+  <style rel="stylesheet" type="text/css"> 
+
+        html {
+        background-image:url(img/html-background.png);
+        background-color: white;
+        font-family: "DejaVu Sans", "Liberation Sans", sans-serif;
+        font-size: 0.85em;
+        line-height: 1.25em;
+        margin: 0 4% 0 4%;
+        }
+
+        body {
+        border: 10px solid #fff;
+        margin:0;
+        padding:0;
+        background: #fff;
+        }
+```
+Реализация через ansible playbook.
+
